@@ -1,25 +1,26 @@
 import random
 import json
 import os
+from pyclbr import Function
 from xml.etree.ElementTree import indent
 
-PATH = 'Manual.json'
-phone_book = []
-user_ids = set() # Хранилище ID
+PATH: str = 'Manual.json'
+phone_book: list = []
+user_ids: set = set() # Хранилище ID
 
 
-def unique_id():
-    # Функция для генерации уникального ID
+def unique_id() -> str:
+    """Функция для генерации уникального ID"""
     while True:
-        new_id = ''.join(random.choices('0123456789', k=8))
+        new_id: str = ''.join(random.choices('0123456789', k=8))
         if new_id not in user_ids:
             user_ids.add(new_id)
             return new_id
 
 
-def open_file():
+def open_file() -> print:
     if os.path.isfile(PATH):
-        # Функция для чтения данных из JSON-файла и добавления их в указанный список
+        """Функция для чтения данных из JSON-файла и добавления их в указанный список"""
         with open(PATH, "r", encoding="utf-8") as file:
             data = json.load(file)
             phone_book.extend(data)
@@ -27,22 +28,22 @@ def open_file():
     return print('\nТелефонная книга не найдена!\n')
 
 
-def save_file():
-    # Функция для сохранения данных в файле
+def save_file() -> print:
+    """Функция для сохранения данных в файле"""
     with open(PATH, "w", encoding="utf-8") as file:
         json.dump(phone_book, file, ensure_ascii=False, indent=4)
         return print('Файл успешно сохранен!')
 
 
-def show_all_contacts():
-    # Функция отображающая весь список контактов
+def show_all_contacts() -> None:
+    """Функция отображающая весь список контактов"""
     print('Список контактов:')
     for contact in phone_book:
         print_contact(contact)
 
 
-def print_contact(cont):
-    # Функция для вывода на печать словаря в одну строку
+def print_contact(cont: dict):
+    """Функция для вывода на печать словаря в одну строку"""
     print(f"{cont.get('id'):20}"
           f"{(cont.get('last_name')).title():20}"
           f"{(cont.get('name')).title():20}"
@@ -51,14 +52,14 @@ def print_contact(cont):
             )
 
 
-def search_contacts():
-    # Функция запуска поиска по значению с клавиатуры
-    crit = input('Введите значение поиска: ')
+def search_contacts() -> Function:
+    """Функция запуска поиска по значению с клавиатуры"""
+    crit: str = input('Введите значение поиска: ')
     return search_criteria(crit)
 
 
-def search_criteria(criteria):
-    # Функция поиска по значение criteria
+def search_criteria(criteria: str) -> dict:
+    """Функция поиска по значение criteria"""
     for contact in phone_book:
         if criteria.lower() in contact.values():
             print_contact(contact)
@@ -67,19 +68,19 @@ def search_criteria(criteria):
         print('Контакт не найден')
 
 
-def create_contact():
-    # Функция для добавления нового контакта
-    new_contact = {}
+def create_contact() -> None:
+    """Функция для добавления нового контакта"""
     print('*' * 18 ,"Добавление нового контакта\n",
           "Поля отмеченные * обязательные для заполнения", sep='\n')
-    last_name_inp, phone_num_inp = '', ''
+    last_name_inp: str = ''
+    phone_num_inp: str = ''
     while last_name_inp is '':
         last_name_inp = input('Введите фамилию*: ')
-    name_inp = input('Введите имя: ')
+    name_inp: str = input('Введите имя: ')
     while phone_num_inp is '':
         phone_num_inp = input('Введите номер телефона*: ')
     comm_input: str = input('Введите комментарий(не обязательное поле): ')
-    new_contact = {
+    new_contact: dict = {
         'id' : unique_id(),
         'name': name_inp.lower() if name_inp != '' else 'Не заполнено',
         'last_name' : last_name_inp.lower(),
@@ -91,10 +92,10 @@ def create_contact():
     return phone_book.append(new_contact)
 
 
-def change_contact():
-    # Функция изменения контакта по ключу
-    chg_id = input('Ведите ID контакта для изменения: ')
-    chg_key = input('Доступные поля для изменения - имя, фамилия, телефон и комментарий.\nУкажите поле: ')
+def change_contact() -> Function | None:
+    """Функция изменения контакта по ключу"""
+    chg_id: str = input('Ведите ID контакта для изменения: ')
+    chg_key: str = input('Доступные поля для изменения - имя, фамилия, телефон и комментарий.\nУкажите поле: ')
     if chg_key.lower() == 'имя':
         chg_key = 'name'
     elif chg_key.lower() == 'фамилия':
@@ -107,25 +108,25 @@ def change_contact():
         print('Указанное поле не найдено!')
         return user_menu()
 
-    chg_value = input('Введите новое значение: ')
+    chg_value: str = input('Введите новое значение: ')
     for d in phone_book:
         if d.get('id') == chg_id:
             d[chg_key] = chg_value
             print('Контакт успешно обновлен.')
 
 
-def delete_contact():
-    # Функция удаления контакта по ID
-    delete_id = input('Ведите ID контакта для удаления из телефонной книги: ')
+def delete_contact() -> None:
+    """Функция удаления контакта по ID"""
+    delete_id: str = input('Ведите ID контакта для удаления из телефонной книги: ')
     for contact in phone_book:
         if delete_id in contact.values():
             print('Контакт удалён из справочника')
             return phone_book.remove(contact)
 
 
-def user_menu():
-    # Функция стартового меню
-    select = {
+def user_menu() -> None:
+    """Функция стартового меню"""
+    select: dict = {
         '1': open_file,
         '2': save_file,
         '3': show_all_contacts,
@@ -146,7 +147,7 @@ def user_menu():
 7 - Удалить контакт
         ''')
     while True:
-        inp = input("Введите номер команды (1-7) или 'q' для выхода: ")
+        inp: str = input("Введите номер команды (1-7) или 'q' для выхода: ")
         if inp.lower() == 'q':  # Выход из меню
             print("Выход из меню.")
             break
