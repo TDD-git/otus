@@ -6,6 +6,9 @@ from unittest.mock import patch
 
 @pytest.mark.parametrize("input_value", ["Test"])
 def test_create_contact(input_value):
+    """
+    Тестирование функции создание контакта в модуле Controller
+    """
     def mock_input(prompt):
         return input_value
 
