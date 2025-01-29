@@ -1,12 +1,17 @@
 import src.controller
 import src.view
 import src.text
-import src.text
-from src import view
-from src.model import PhonebookModel
+import pytest
+from unittest.mock import patch
 
+@pytest.mark.parametrize("input_value", ["Test"])
+def test_create_contact(input_value):
+    def mock_input(prompt):
+        return input_value
 
-def test_show_all_contacts():
-    result = PhonebookModel(src.text.PATH)
-    assert isinstance(result.read_file(), list)
+    with patch('builtins.input', mock_input):
+        result = src.controller.PhonebookController().create_contacts()
+        assert isinstance(result, list)
+        assert isinstance(result[0], dict)
+        assert len(result[0]) == 5
 
