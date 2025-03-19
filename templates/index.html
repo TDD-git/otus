@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Home page
+{% endblock %}
+
+{% block body %}
+  <ul>
+    {% for title in titles %}
+      <li>{{ title }}</li>
+    {% endfor %}
+  </ul>
+  <h3>Links:</h3>
+  <ul>
+    <li><a href="/docs">Ручки :)</a></li>
+  </ul>
+{% endblock %}
