@@ -10,7 +10,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name, self.description, f'{self.price}$'
+        return f'{self.name} {self.description} {self.price}$'
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -18,5 +18,5 @@ class Category(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='categories')
 
     def __str__(self):
-        return self.name, self.description
+        return f'{self.name} {self.description}'
 
